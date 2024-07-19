@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\main-code.obj" 
+TO ".\Objects\solar" 
+PRINT(".\Listings\solar.m51")
