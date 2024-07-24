@@ -1,0 +1,124 @@
+C51 COMPILER V9.60.0.0   MAIN_CODE                                                         06/22/2024 08:42:50 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN_CODE
+OBJECT MODULE PLACED IN .\Objects\main-code.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main-code.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings
+                    -\main-code.lst) TABS(2) OBJECT(.\Objects\main-code.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include <stdio.h>
+   3          
+   4          sbit sw1 = P3^0;//sw for direction control
+   5          sbit sw2 = P3^1;
+   6          
+   7          sbit dec_speed=P3^2;//Sw for decreasing speed
+   8          sbit inc_speed=P3^3; //Sw for increasing speed
+   9          
+  10          unsigned char x=30000;
+  11          
+  12          void msdelay(unsigned int time)
+  13          
+  14          {
+  15   1      unsigned int i,j;
+  16   1      
+  17   1      for(i=0;i<time;i++)
+  18   1      
+  19   1      for(j=0;j<922;j++);
+  20   1      
+  21   1      }
+  22          void main()
+  23          {
+  24   1      
+  25   1      sw1=1;  //making P2.0 as inputs
+  26   1        
+  27   1      sw2=1;
+  28   1        
+  29   1      
+  30   1        
+  31   1      inc_speed=1;       //making P3.2 as an input
+  32   1      
+  33   1      dec_speed=1;       //making P3.3 as an input
+  34   1      
+  35   1      P2=0x00;           //making P2 as an output port
+  36   1      
+  37   1      IE =0X85;          //Enable EX INTO and INT1
+  38   1      
+  39   1      TCON=0X05; 
+  40   1        
+  41   1        
+  42   1      while(1)
+  43   1      
+  44   1      {
+  45   2      if(sw1==0)          //Anticlockwise
+  46   2      
+  47   2      {
+  48   3        
+  49   3        
+  50   3        P2=0x03;
+  51   3        msdelay(x);
+  52   3        
+  53   3        P2=0x06;
+  54   3        msdelay(x);
+C51 COMPILER V9.60.0.0   MAIN_CODE                                                         06/22/2024 08:42:50 PAGE 2   
+
+  55   3        
+  56   3        P2=0x0C;
+  57   3        msdelay(x);
+  58   3        
+  59   3        P2=0x09;
+  60   3        msdelay(x);
+  61   3          
+  62   3      }
+  63   2      
+  64   2      else if(sw2==0)       //Clockwise
+  65   2      
+  66   2      {
+  67   3        
+  68   3        P2=0x09;
+  69   3        msdelay(x);
+  70   3        P2=0x0C;
+  71   3        msdelay(x);
+  72   3        P2=0x06;
+  73   3        msdelay(x);
+  74   3        P2=0x03;
+  75   3        msdelay(x);
+  76   3        
+  77   3        
+  78   3      }
+  79   2      
+  80   2      
+  81   2      
+  82   2      }
+  83   1      }
+  84          void int0() interrupt 0      //Will be called every time INTO SW is pressed
+  85          
+  86          {
+  87   1      if(x<30000)
+  88   1      
+  89   1      x=x+60;
+  90   1      }
+  91          
+  92          void int1() interrupt 2     //Will be called every time INT1 SW is pressed
+  93          
+  94          {
+  95   1      if(x>20) 
+  96   1        x=x-60;
+  97   1      
+  98   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    171    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
